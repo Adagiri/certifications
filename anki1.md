@@ -125,3 +125,51 @@ How do you implement encryption in Infrastructure as Code?	Terraform example: aw
 What's the performance impact of encryption?	~1-2% overhead, handled by AWS hardware acceleration. Unnoticeable for most applications.
 
 What are the 4 stages of implementing security for startups?	Week 1: IAM setup, MFA, basic monitoring. Week 2: Network security, encryption. Week 3: Secrets management, logging. Week 4: Backup strategy, documentation.
+
+# AWS Global Infrastructure & History - Anki Cards
+
+When was AWS first launched internally at Amazon and what was the motivation?	AWS was launched internally in 2002 at amazon.com because they realized that IT departments could be externalized. Amazon's infrastructure was one of their core strengths and they thought they could do IT for other people.
+
+What was AWS's first public offering and when was it launched?	SQS (Simple Queue Service) was AWS's first public offering, launched in 2004.
+
+What three services did AWS launch when they expanded their offering in 2006?	In 2006, AWS relaunched with SQS, S3 (Simple Storage Service), and EC2 (Elastic Compute Cloud).
+
+What is AWS's current market position according to Gartner's Magic Quadrant?	AWS is a leader in Gartner's Magic Quadrant and has been the case for many years. As of 2023, AWS has $90 billion in revenue and accounts for about 31% of the market in Q1 2024, with Microsoft being second at 25%.
+
+How long has AWS been a pioneer and leader in the cloud market?	AWS has been a pioneer and leader of the cloud market for 13 consecutive years and has over 1 million active users.
+
+What are the main components of AWS global infrastructure?	AWS global infrastructure consists of: AWS Regions, Availability Zones, Data Centers, Edge Locations, and Points of Presence.
+
+What is an AWS Region?	An AWS Region is a cluster of data centers located in a specific geographic area (e.g., Ohio, Singapore, Sydney, Tokyo). Regions have names like US-East-1 or EU-West-3, and most AWS services are region-scoped.
+
+What are the four key factors to consider when choosing an AWS Region?	1) Compliance (government data locality requirements), 2) Latency (deploy close to your users), 3) Service availability (not all regions have all services), 4) Pricing (varies between regions).
+
+How many Availability Zones does each AWS Region typically have?	Each AWS Region usually has 3 Availability Zones (minimum is 3, maximum is 6, but typically 3).
+
+What is an Availability Zone in AWS?	An Availability Zone is one or more discrete data centers with redundant power, networking, and connectivity. They are separate from each other to be isolated from disasters but connected with high bandwidth, ultra-low latency networking.
+
+Using Sydney region as an example, what would the Availability Zone naming convention look like?	Sydney region code is ap-southeast-2. The three Availability Zones would be: ap-southeast-2a, ap-southeast-2b, and ap-southeast-2c.
+
+How many Points of Presence (Edge Locations) does AWS have globally?	AWS has more than 400 Points of Presence in 90 cities across 40 countries, used to deliver content to end users with the lowest latency possible.
+
+What are examples of AWS Global Services?	Global services include: IAM (Identity and Access Management), Route 53, CloudFront, and WAF (Web Application Firewall).
+
+What are examples of AWS Regional Services?	Regional services include: Amazon EC2, Elastic Beanstalk, Lambda, and Rekognition.
+
+In the AWS Console, how can you identify if a service is global or regional?	Global services show "Global" in the top-right corner of the console. Regional services show the specific region name (e.g., "Ireland" or "Northern Virginia").
+
+What are the two main ways to find AWS services in the console?	1) Click "Services" in the top-left to browse by alphabetical order or category, 2) Use the search bar to type the service name and get direct results.
+
+Where can you check if a specific AWS service is available in your chosen region?	You can check the AWS Regional Services table (found by searching "AWS global infrastructure" or "AWS regional services") which lists services by region.
+
+Why is it important to stay in the same region throughout an AWS course or project?	Because regional services show different resources based on the selected region. If you switch regions, you'll see a different view of your resources, which can be confusing during learning or development.
+
+What should you consider when selecting a region for lowest latency?	Choose a region that is geographically close to you or your users. For example, if you're in Europe, choose Ireland (EU-West-1); if you're in Africa near Cape Town, choose the Cape Town region.
+
+How are Availability Zones designed to handle disasters?	Availability Zones are isolated from each other so that if something happens to one AZ (like ap-southeast-2a), it won't cascade to other AZs (ap-southeast-2b or ap-southeast-2c) in the same region.
+
+What happens when you use an AWS service in one region vs another region?	When you use a service in one region and try to use it in another region, it's like using the service for the first time - you won't see the same resources or configurations from the previous region.
+
+What is the purpose of AWS's private network connecting regions?	AWS regions are connected through a private AWS network that enables secure, high-speed communication between regions for services that need to operate across multiple geographic locations.
+
+What types of companies and applications use AWS?	AWS is used by diverse companies including Netflix, McDonald's, 21st Century Fox, Activision, Dropbox, Airbnb, and NASA. Use cases include enterprise IT, backup and storage, big data analytics, website hosting, mobile/social app backends, and gaming servers.
