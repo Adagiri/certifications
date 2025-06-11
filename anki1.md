@@ -223,3 +223,57 @@ What happens when you attach a custom route table to a subnet?	The subnet stops 
 What's the difference between main route table and custom route table?	Main route table: Default for all subnets, cannot be deleted, applied to subnets without custom route tables. Custom route table: Created for specific subnets, provides granular control over routing per subnet.
 What route entry always exists in every route table and cannot be removed?	The local route: VPC CIDR range → local router. This enables communication between all subnets within the VPC and cannot be deleted or modified.
 In a VPC with public and private subnets, how do you control internet access?	Create separate route tables: Public subnet route table includes 0.0.0.0/0 → IGW. Private subnet route table only has the local route (no internet gateway route).
+
+What are the three types of IP addresses available in AWS VPC?	Private IP address (for communication within VPC), Public IP address (for internet communication, changes on restart), and Elastic IP address (static public IP that doesn't change on restart).
+
+How is a private IP address assigned to an EC2 instance?	Private IP is assigned from the subnet's IP address range when the instance is launched. You can specify which private IP to assign, or AWS will dynamically allocate an available IP from the subnet range.
+
+What happens to public IP addresses when you stop and start an EC2 instance?	The public IP address is released and a new public IP is assigned from Amazon's pool of public IPs. The private IP address remains the same.
+
+What is an Elastic IP and how does it differ from a public IP?	Elastic IP is a static public IP address allocated to your AWS account. Unlike public IP, it doesn't change when you restart the instance and remains with your account until you release it.
+
+How are you billed for Elastic IP addresses?	You're not billed for Elastic IP while it's associated with a running EC2 instance. However, you're charged if the Elastic IP is allocated to your account but not associated with a running instance (to prevent IP address waste).
+
+What is the key difference between IPv4 and IPv6 addresses in VPC?	IPv4 supports both private and public IP addresses within VPC. IPv6 addresses are all public and globally unique - there are no private IPv6 addresses in VPC.
+
+What is dual stack mode in AWS VPC?	Dual stack mode allows AWS resources (like CloudFront, Load Balancers) to have both IPv4 and IPv6 addresses simultaneously, enabling communication over both protocols.
+
+What are the CIDR ranges for IPv6 in VPC?	IPv6 has fixed CIDR ranges: /56 for VPC and /64 for subnets. You cannot choose custom ranges like you can with IPv4.
+
+What are the two types of firewalls in AWS VPC?	Security Groups (operate at EC2 instance level) and Network ACLs (operate at subnet level). Traffic must pass through both firewalls.
+
+What is the key difference between Security Groups and NACLs in terms of statefulness?	Security Groups are stateful - return traffic is automatically allowed. NACLs are stateless - you must explicitly allow both inbound and outbound traffic, including return traffic.
+
+What does "stateful" mean for Security Groups?	If you allow inbound traffic on a port, the return/response traffic is automatically allowed outbound without needing an explicit outbound rule. The same applies in reverse for outbound traffic.
+
+What does "stateless" mean for Network ACLs?	You must explicitly define both inbound and outbound rules. If you allow inbound traffic, you must also create an outbound rule for the return traffic using ephemeral port ranges (32768-65535).
+
+What types of rules do Security Groups support vs Network ACLs?	Security Groups support only ALLOW rules. Network ACLs support both ALLOW and DENY rules, making them useful for blocking specific IP addresses.
+
+How are rules evaluated in Security Groups vs Network ACLs?	Security Groups evaluate all rules and allow traffic if any rule matches. Network ACLs evaluate rules in numerical order (starting from lowest number) and stop at the first match.
+
+What is the default behavior of a new Security Group?	By default, all inbound traffic is BLOCKED (no inbound rules). All outbound traffic is ALLOWED (allows all traffic to internet).
+
+What is the default behavior of the default Network ACL?	The default Network ACL allows ALL inbound and outbound traffic. Custom Network ACLs deny all traffic by default until rules are added.
+
+How can you reference other Security Groups in Security Group rules?	Instead of specifying IP addresses, you can reference another Security Group ID as the source. This allows traffic from any instance attached to that Security Group, making it easier to manage multi-tier applications.
+
+What are ephemeral ports and why are they important for Network ACLs?	Ephemeral ports (32768-65535) are temporary ports used by clients to establish connections. For Network ACLs, you must allow outbound traffic to these port ranges for return traffic from inbound connections.
+
+What is the benefit of using Network ACLs for security?	Network ACLs can DENY specific IP addresses at the subnet level, which Security Groups cannot do. This is useful for blocking malicious IPs while still allowing general access through Security Groups.
+
+At which levels can you apply Security Groups vs Network ACLs?	Security Groups operate at the ENI (Elastic Network Interface) level, effectively instance-level. Network ACLs operate at the subnet level, affecting all instances in that subnet.
+
+What is the default VPC and what are its characteristics?	Every AWS region has one default VPC created automatically with CIDR 172.31.0.0/16. It has one public subnet per AZ (/20 range), internet gateway attached, and main route table with internet route.
+
+How many IP addresses are available in a default VPC subnet?	Each default subnet uses /20 CIDR, providing 4096 total IP addresses (4091 usable after AWS reserves 5 IPs).
+
+Can you recreate a deleted default VPC?	Yes, you can recreate the default VPC through VPC console → Actions → Create Default VPC. It will restore the same CIDR ranges and configuration.
+
+What makes a subnet "public" vs "private"?	Public subnet: Route table has entry for 0.0.0.0/0 pointing to Internet Gateway. Private subnet: Route table has NO route to Internet Gateway, only local VPC routes.
+
+What are the basic steps to create a public subnet?	1) Create VPC with CIDR 2) Create Internet Gateway and attach to VPC 3) Create subnet 4) Create custom route table 5) Add internet route (0.0.0.0/0 → IGW) 6) Associate route table with subnet 7) Enable auto-assign public IP.
+
+How do you connect to a private EC2 instance?	Connect to a public EC2 instance first (bastion/jump host), then SSH from there to the private instance using its private IP address. You need to copy your SSH key to the public instance or use SSH forwarding.
+
+What connectivity does a private subnet instance have by default?	Private instances can communicate with other instances in the same VPC via local routes, but cannot access the internet (no outbound connectivity) unless NAT Gateway/Instance is configured.
