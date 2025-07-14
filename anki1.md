@@ -277,3 +277,45 @@ What are the basic steps to create a public subnet?	1) Create VPC with CIDR 2) C
 How do you connect to a private EC2 instance?	Connect to a public EC2 instance first (bastion/jump host), then SSH from there to the private instance using its private IP address. You need to copy your SSH key to the public instance or use SSH forwarding.
 
 What connectivity does a private subnet instance have by default?	Private instances can communicate with other instances in the same VPC via local routes, but cannot access the internet (no outbound connectivity) unless NAT Gateway/Instance is configured.
+
+# AWS CI/CD and CodeCommit - Anki Cards
+
+What is CI/CD and what are its two main components?	CI/CD stands for Continuous Integration and Continuous Delivery. CI involves developers pushing code frequently to a central repository where it's automatically tested. CD involves automatically deploying tested code to application servers.
+
+What are the main benefits of Continuous Integration (CI)?	CI helps find bugs early and fix them early, saves developer time by automating testing, enables faster code delivery, allows frequent deployments, and creates a healthier development cycle for happier developers.
+
+What is the difference between Continuous Integration and Continuous Delivery?	Continuous Integration focuses on automatically testing code when it's pushed to a repository. Continuous Delivery focuses on automatically deploying tested code to application servers, enabling frequent releases instead of quarterly releases.
+
+What are the core components of AWS CI/CD tech stack?	Code storage (CodeCommit, GitHub, Bitbucket), Build/Test phase (CodeBuild, Jenkins CI), Deploy phase (CodeDeploy, Elastic Beanstalk), and Orchestration (CodePipeline to coordinate the entire process).
+
+What AWS services can CodeDeploy deploy to?	CodeDeploy can deploy to EC2 instances, on-premises servers, Lambda functions, and ECS (Elastic Container Service).
+
+What is AWS CodeCommit and what is its current status as of July 2024?	CodeCommit was AWS's private Git repository service, but AWS discontinued it for new customers on July 25, 2024. AWS now recommends migrating to external Git solutions like GitHub or GitLab.
+
+What are the main benefits of using version control with Git repositories?	Version control allows you to understand changes to code over time, see who committed what changes, track what was added or removed, collaborate with other developers, backup code in the cloud, and roll back to previous versions.
+
+What were the key advantages of CodeCommit over third-party Git services?	CodeCommit offered private Git repositories within your AWS VPC, no size limits, full AWS management, high availability, increased security and compliance, encryption, IAM access control, and integration with AWS CI tools.
+
+What authentication methods did CodeCommit support?	CodeCommit supported SSH keys (users configure SSH keys for Git repo access) and HTTPS (standard login and password access to Git repo).
+
+How was security implemented in CodeCommit?	Security included IAM policies for user/role permissions, KMS encryption for stored code, encryption in transit via HTTPS/SSH protocols, and cross-account access through IAM roles with STS AssumeRole API.
+
+What are the main differences between CodeCommit and GitHub?	Both support pull requests and CI integrations. CodeCommit had full AWS IAM integration and code stayed only on AWS, but had minimal UI. GitHub offers full-featured UI, supports GitHub users/SSO, and can be hosted on GitHub servers or enterprise on-premises.
+
+How can you monitor CodeCommit events?	CodeCommit integrates with EventBridge to monitor events like pull request creation/status changes, new reference creation, and new comments. These events can trigger SNS, Lambda, or CodePipeline for automation.
+
+How do you migrate a Git repository to CodeCommit?	First create your CodeCommit repository, then use 'git clone' to download the entire repository (files, commits, history) to your local computer, then push it to the new CodeCommit repository URL.
+
+How can you achieve cross-region replication for CodeCommit?	When you push/create/delete branches, CodeCommit emits events (referenceCreated/referenceUpdated) to EventBridge. EventBridge can trigger an ECS task or CodeBuild task that does a git clone and replicates to the target repository in another region.
+
+How do you implement branch security in CodeCommit?	Use IAM policies to restrict which branches users can push to. For example, deny policies can prevent junior developers from pushing to production branches while allowing senior developers full access. Resource policies are not supported.
+
+What are pull request approval rules in CodeCommit?	Approval rules ensure code quality by requiring a certain number of people to review and approve pull requests before merging. You specify a pool of users who can approve and the minimum number of approvals needed.
+
+How do you specify who can approve pull requests in CodeCommit?	You can specify IAM principal ARNs including users, federated users, IAM roles, and IAM groups. You can also use templates to automatically apply approval rules to pull requests in specific branches like dev and prod.
+
+What happens when you grant push permission to a CodeCommit repository?	By default, users with push permission can contribute to any branch. To restrict access to specific branches, you must use IAM policies to deny access to certain branches based on user groups or roles.
+
+What is the typical CI/CD flow from code to deployment?	Developer pushes code → Code repository (CodeCommit/GitHub) → Build server tests code (CodeBuild/Jenkins) → If tests pass, deployment server (CodeDeploy) deploys to application servers → New version goes live automatically.
+
+Why does AWS recommend moving away from CodeCommit?	AWS discontinued CodeCommit for new customers in July 2024 and recommends migrating to external Git solutions like GitHub or GitLab for better long-term support and feature development.
